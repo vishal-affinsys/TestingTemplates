@@ -16,23 +16,24 @@ const Image = (props: {
   setScale: Dispatch<SetStateAction<{image: null | string}>>;
   backDrop: string;
 }): JSX.Element => {
+  // const backgroundColor: string = getRandomColor();
   return (
     <OnPressAnimation
-      reset={() => {}}
+      reset={(): void => {}}
       btnStyle={{padding: 0, margin: 1, backgroundColor: props.backDrop}}
       onLongPress={() => {
         props.setScale({image: props.image});
       }}
-      onPress={() => {}}>
+      onPress={(): void => {}}>
       <FastImage
         style={{
           width: props.width,
           height: props.height,
+          padding: 1,
           borderRadius: 8,
         }}
         source={{
           uri: props.image,
-          headers: {Authorization: 'someAuthToken'},
           priority: FastImage.priority.normal,
         }}
         resizeMode={FastImage.resizeMode.cover}

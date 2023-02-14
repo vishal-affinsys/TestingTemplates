@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated, Pressable, View} from 'react-native';
+import {Animated, Pressable, StyleSheet, View} from 'react-native';
 import {customStyles, ScreenLayout} from '../constants/styles';
 
 const ScaleAnimation = React.memo((props: {children: JSX.Element}) => {
@@ -10,36 +10,34 @@ const ScaleAnimation = React.memo((props: {children: JSX.Element}) => {
     useNativeDriver: true,
   });
 
-  React.useEffect(() => {
+  React.useEffect((): (() => void) => {
     animation.start();
-    return () => {
-      animation.reset();
-    };
+    return animation.reset;
   });
   return (
     <Animated.View style={[{transform: [{scale: scale}]}]}>
       <View>
-        <View
-          style={{
-            height: ScreenLayout.height,
-            width: ScreenLayout.width,
-            position: 'absolute',
-            backgroundColor: 'black',
-            opacity: 0.5,
-          }}
-        />
-        <View
-          style={{
-            height: ScreenLayout.height,
-            width: ScreenLayout.width,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {props.children}
-        </View>
+        <View style={style.backdrop} />
+        <View style={style.content}>{props.children}</View>
       </View>
     </Animated.View>
   );
+});
+
+const style = StyleSheet.create({
+  backdrop: {
+    height: ScreenLayout.height,
+    width: ScreenLayout.width,
+    position: 'absolute',
+    backgroundColor: 'black',
+    opacity: 0.5,
+  },
+  content: {
+    height: ScreenLayout.height,
+    width: ScreenLayout.width,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const OnPressAnimation = (props: {
@@ -48,9 +46,9 @@ const OnPressAnimation = (props: {
   onPress: () => void;
   onLongPress: () => void;
   reset: () => void;
-}) => {
+}): Element => {
   const scale = React.useRef(new Animated.Value(1)).current;
-  const animation = (val: number) =>
+  const animation = (val: number): Animated.CompositeAnimation =>
     Animated.spring(scale, {
       toValue: val,
       friction: 4,
@@ -64,20 +62,20 @@ const OnPressAnimation = (props: {
     <Animated.View style={[{transform: [{scale: scale}]}]}>
       <Pressable
         style={[customStyles.btnStyle, props.btnStyle]}
-        onPressIn={() => {
+        onPressIn={(): void => {
           pressIn.current.start();
         }}
-        onPressOut={() => {
+        onPressOut={(): void => {
           pressIn.current.reset();
           props.reset();
         }}
-        onLongPress={() => {
+        onLongPress={(): void => {
           props.onLongPress();
         }}
         cancelable={true}
         delayLongPress={100}
-        onPress={() => {
-          stagger.start(() => {
+        onPress={(): void => {
+          stagger.start((): void => {
             stagger.reset();
           });
           props.onPress();

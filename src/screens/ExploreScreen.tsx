@@ -81,7 +81,7 @@ const ExploreScreen = (): JSX.Element => {
           opacity: scale.image === null ? 1 : 0.4,
           backgroundColor: scale.image !== null ? 'black' : 'white',
         }}
-        onEndReached={() => {
+        onEndReached={(): void => {
           setParams(prevState => {
             return {page: prevState.page + 1, perPage: 53};
           });

@@ -9,6 +9,15 @@ export const generateImages = (numberOfImages: number): string[] => {
   return data;
 };
 
+export const getRandomColor = (): string => {
+  const letters: string = '0123456789ABCDEF';
+  let color: string = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 export const generateRandom = (min = 1, max = 3): number => {
   let difference = max - min;
   let rand = Math.random();

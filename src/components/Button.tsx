@@ -10,6 +10,7 @@ const Button = (props: {
 }): JSX.Element => {
   return (
     <OnPressAnimation
+      key={''}
       reset={() => {}}
       onLongPress={() => {}}
       btnStyle={{}}

@@ -1,5 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {FlatList, Image, Pressable, StatusBar, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useGetImagesQuery} from '../store/ImageReducer';
 import {TypeOne, TypeThree, TypeTwo} from '../components/StaggeredView';
 import {ScreenLayout} from '../constants/styles';
@@ -30,40 +38,26 @@ const ExploreScreen = (): JSX.Element => {
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        height: ScreenLayout.height,
-        width: ScreenLayout.width,
-      }}>
+    <View style={[style.container]}>
       <StatusBar
         translucent={true}
         backgroundColor={'transparent'}
         barStyle={'dark-content'}
       />
       <Pressable
-        style={{
-          display: scale.image === null ? 'none' : 'flex',
-          position: 'absolute',
-          height: ScreenLayout.height,
-          aspectRatio: 0.9,
-          zIndex: 1,
-        }}
+        style={[
+          {
+            display: scale.image === null ? 'none' : 'flex',
+          },
+          style.press,
+        ]}
         onPress={() => {
           setScale({image: null});
         }}>
         <View>
           {scale.image !== null ? (
             <ScaleAnimation>
-              <Image
-                source={{uri: scale.image}}
-                style={{
-                  height: ScreenLayout.height / 2,
-                  width: ScreenLayout.width * 0.8,
-                  borderRadius: 12,
-                  opacity: 1,
-                }}
-              />
+              <Image source={{uri: scale.image}} style={style.imageStyle} />
             </ScaleAnimation>
           ) : (
             <View />
@@ -75,9 +69,6 @@ const ExploreScreen = (): JSX.Element => {
         keyExtractor={item => item[0].id}
         maxToRenderPerBatch={3}
         contentContainerStyle={{
-          alignContent: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
           opacity: scale.image === null ? 1 : 0.4,
           backgroundColor: scale.image !== null ? 'black' : 'white',
         }}
@@ -93,3 +84,22 @@ const ExploreScreen = (): JSX.Element => {
 };
 
 export default ExploreScreen;
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: ScreenLayout.height,
+    width: ScreenLayout.width,
+  },
+  imageStyle: {
+    height: ScreenLayout.height / 2,
+    width: ScreenLayout.width * 0.8,
+    borderRadius: 12,
+    opacity: 1,
+  },
+  press: {
+    position: 'absolute',
+    height: ScreenLayout.height,
+    aspectRatio: 0.9,
+    zIndex: 1,
+  },
+});

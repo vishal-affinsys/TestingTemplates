@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ScreenLayout} from '../constants/styles';
 import {randomChoice} from '../helpers/Images';
 import FastImage from 'react-native-fast-image';
@@ -20,18 +20,13 @@ const Image = (props: {
   return (
     <OnPressAnimation
       reset={(): void => {}}
-      btnStyle={{padding: 0, margin: 1, backgroundColor: props.backDrop}}
+      btnStyle={[style.btnStyle, {backgroundColor: props.backDrop}]}
       onLongPress={() => {
         props.setScale({image: props.image});
       }}
       onPress={(): void => {}}>
       <FastImage
-        style={{
-          width: props.width,
-          height: props.height,
-          padding: 1,
-          borderRadius: 8,
-        }}
+        style={[{width: props.width, height: props.height}, style.imageStyle]}
         source={{
           uri: props.image,
           priority: FastImage.priority.normal,
@@ -90,7 +85,7 @@ const TypeTwo = React.memo(
     setScale: Dispatch<SetStateAction<{image: null | string}>>;
   }): JSX.Element => {
     return (
-      <View style={{flexDirection: 'row'}}>
+      <View style={style.layout}>
         <Image
           key={props.item[0].id}
           item={props.item}
@@ -188,3 +183,14 @@ const TypeThree = React.memo(
 );
 
 export {TypeOne, TypeTwo, TypeThree};
+const style = StyleSheet.create({
+  btnStyle: {
+    padding: 0,
+    margin: 1,
+  },
+  imageStyle: {
+    padding: 1,
+    borderRadius: 8,
+  },
+  layout: {flexDirection: 'row'},
+});

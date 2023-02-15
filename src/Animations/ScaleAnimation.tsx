@@ -46,7 +46,7 @@ const OnPressAnimation = (props: {
   onPress: () => void;
   onLongPress: () => void;
   reset: () => void;
-}): Element => {
+}): JSX.Element => {
   const scale = React.useRef(new Animated.Value(1)).current;
   const animation = (val: number): Animated.CompositeAnimation =>
     Animated.spring(scale, {

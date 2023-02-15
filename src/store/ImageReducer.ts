@@ -4,7 +4,7 @@ import {BaseQueryResult} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 export const imagesApi = createApi({
   reducerPath: 'imagesApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.pexels.com/v1/curated',
+    baseUrl: 'https://api.pexels.com/v1/',
     headers: {
       Authorization: '563492ad6f91700001000001cb72da354d3247fabf6d0d7b8b2e9bf7',
     },
@@ -29,7 +29,7 @@ export const imagesApi = createApi({
         return endpointName;
       },
       query: (props: {page: number; perPage: number}) =>
-        `?page=${props.page}&per_page=${props.perPage}`,
+        `curated?page=${props.page}&per_page=${props.perPage}`,
       merge(currentCacheData, responseData): void | any {
         currentCacheData.push(...responseData);
         return currentCacheData;
@@ -40,4 +40,24 @@ export const imagesApi = createApi({
     }),
   }),
 });
+
+export const images = createApi({
+  reducerPath: 'searched',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://api.pexels.com/v1/search',
+    headers: {
+      Authorization: '563492ad6f91700001000001cb72da354d3247fabf6d0d7b8b2e9bf7',
+    },
+  }),
+  endpoints: builder => ({
+    searchedImages: builder.query({
+      query: ({name, count = 20}) => {
+        console.log({name, count});
+        return `?query=${name}&per_page=${count}`;
+      },
+    }),
+  }),
+});
+
 export const {useGetImagesQuery} = imagesApi;
+export const {useSearchedImagesQuery} = images;

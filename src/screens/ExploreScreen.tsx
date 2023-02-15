@@ -2,11 +2,11 @@
 import React from 'react';
 import {
   FlatList,
-  Image,
   Pressable,
   StatusBar,
   StyleSheet,
   View,
+  Image,
 } from 'react-native';
 import {useGetImagesQuery} from '../store/ImageReducer';
 import {TypeOne, TypeThree, TypeTwo} from '../components/StaggeredView';

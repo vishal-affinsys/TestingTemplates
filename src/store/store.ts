@@ -1,13 +1,19 @@
 import {configureStore} from '@reduxjs/toolkit';
-// Or from '@reduxjs/toolkit/query/react'
 import {setupListeners} from '@reduxjs/toolkit/query';
-import {imagesApi} from './ImageReducer';
+import {images, imagesApi} from './ImageReducer';
+import {words} from './Words';
 
 export const store = configureStore({
   reducer: {
     [imagesApi.reducerPath]: imagesApi.reducer,
+    [images.reducerPath]: images.reducer,
+    [words.reducerPath]: words.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(imagesApi.middleware),
+    getDefaultMiddleware().concat([
+      imagesApi.middleware,
+      images.middleware,
+      words.middleware,
+    ]),
 });
 setupListeners(store.dispatch);

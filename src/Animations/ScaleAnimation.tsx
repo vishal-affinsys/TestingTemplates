@@ -1,6 +1,8 @@
 import React from 'react';
 import {Animated, Pressable, StyleSheet, View} from 'react-native';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import {customStyles, ScreenLayout} from '../constants/styles';
+import {options} from '../helpers/HapticFeed';
 
 const ScaleAnimation = React.memo((props: {children: JSX.Element}) => {
   const scale = React.useRef(new Animated.Value(0)).current;
@@ -12,6 +14,7 @@ const ScaleAnimation = React.memo((props: {children: JSX.Element}) => {
 
   React.useEffect((): (() => void) => {
     animation.start();
+    ReactNativeHapticFeedback.trigger('impactMedium', options);
     return animation.reset;
   });
   return (

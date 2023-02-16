@@ -1,40 +1,36 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  FlatList,
-  Pressable,
-  StatusBar,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import {FlatList, Pressable, StatusBar, StyleSheet, View} from 'react-native';
 import {useGetImagesQuery} from '../store/ImageReducer';
 import {TypeOne, TypeThree, TypeTwo} from '../components/StaggeredView';
 import {ScreenLayout} from '../constants/styles';
-import {ScaleAnimation} from '../Animations/ScaleAnimation';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetImage} from '../store/ImageData';
+import Visibility from '../components/Visibility';
+import {ImageObject} from '../Models/ImageModel';
 
 const ExploreScreen = (): JSX.Element => {
   const [params, setParams] = React.useState({perPage: 53, page: 1});
-  const [scale, setScale] = React.useState<{image: string | null}>({
-    image: null,
-  });
   const data = useGetImagesQuery(params);
-
+  const imageData = useSelector<unknown, any>(
+    (state: unknown): any => state.image,
+  );
+  const dispatch = useDispatch();
   const renderItem = React.useCallback(
-    (props: {item: any; index: number}) => {
+    (props: {item: ImageObject[]; index: number}): JSX.Element => {
       if (props.item.length === 5) {
-        return <TypeThree item={props.item} setScale={setScale} />;
+        return <TypeThree item={props.item} />;
       }
       if (props.index === 0 && props.item.length !== 5) {
-        return <TypeOne item={props.item} setScale={setScale} />;
+        return <TypeOne item={props.item} />;
       }
       if (props.index % 3 === 0) {
-        return <TypeOne item={props.item} setScale={setScale} />;
+        return <TypeOne item={props.item} />;
       } else {
-        return <TypeTwo item={props.item} setScale={setScale} />;
+        return <TypeTwo item={props.item} />;
       }
     },
-    [setScale],
+    [],
   );
 
   return (
@@ -47,31 +43,22 @@ const ExploreScreen = (): JSX.Element => {
       <Pressable
         style={[
           {
-            display: scale.image === null ? 'none' : 'flex',
+            display: imageData.isVisible ? 'flex' : 'none',
           },
           style.press,
         ]}
-        onPress={() => {
-          setScale({image: null});
+        onPress={(): void => {
+          dispatch(resetImage());
         }}>
-        <View>
-          {scale.image !== null ? (
-            <ScaleAnimation>
-              <Image source={{uri: scale.image}} style={style.imageStyle} />
-            </ScaleAnimation>
-          ) : (
-            <View />
-          )}
-        </View>
+        <Visibility
+          isVisible={imageData.isVisible}
+          imageData={imageData.imageData}
+        />
       </Pressable>
       <FlatList
         data={data.currentData === undefined ? [] : data.currentData}
-        keyExtractor={item => item[0].id}
+        keyExtractor={(item: ImageObject[]): string => item[0].id.toString()}
         maxToRenderPerBatch={3}
-        contentContainerStyle={{
-          opacity: scale.image === null ? 1 : 0.4,
-          backgroundColor: scale.image !== null ? 'black' : 'white',
-        }}
         onEndReached={(): void => {
           setParams(prevState => {
             return {page: prevState.page + 1, perPage: 53};
@@ -98,8 +85,7 @@ const style = StyleSheet.create({
   },
   press: {
     position: 'absolute',
-    height: ScreenLayout.height,
-    aspectRatio: 0.9,
+    flex: 1,
     zIndex: 1,
   },
 });

@@ -18,12 +18,12 @@ const ScaleAnimation = React.memo((props: {children: JSX.Element}) => {
     return animation.reset;
   });
   return (
-    <Animated.View style={[{transform: [{scale: scale}]}]}>
-      <View>
-        <View style={style.backdrop} />
+    <View>
+      <View style={style.backdrop} />
+      <Animated.View style={[{transform: [{scale: scale}]}]}>
         <View style={style.content}>{props.children}</View>
-      </View>
-    </Animated.View>
+      </Animated.View>
+    </View>
   );
 });
 
@@ -33,12 +33,13 @@ const style = StyleSheet.create({
     width: ScreenLayout.width,
     position: 'absolute',
     backgroundColor: 'black',
-    opacity: 0.5,
+    opacity: 0.8,
   },
   content: {
     height: ScreenLayout.height,
     width: ScreenLayout.width,
     justifyContent: 'center',
+    zIndex: 1,
     alignItems: 'center',
   },
 });

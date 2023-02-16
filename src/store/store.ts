@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
+import {imageSlice} from './ImageData';
 import {images, imagesApi} from './ImageReducer';
 import {words} from './Words';
 
@@ -8,6 +9,7 @@ export const store = configureStore({
     [imagesApi.reducerPath]: imagesApi.reducer,
     [images.reducerPath]: images.reducer,
     [words.reducerPath]: words.reducer,
+    image: imageSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat([

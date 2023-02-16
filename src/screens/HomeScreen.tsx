@@ -6,7 +6,6 @@ import {MD3Colors, ProgressBar, TextInput} from 'react-native-paper';
 import ChipBuilder from '../components/Chips';
 import ImageCard from '../components/ImageCard';
 import useDebounce from '../helpers/UseDebounce';
-
 import {useSearchedImagesQuery} from '../store/ImageReducer';
 import {useGetWordsQuery} from '../store/Words';
 
@@ -43,7 +42,7 @@ const HomeScreen = () => {
   React.useEffect(() => {
     animation.start();
     animate.start();
-    return () => {
+    return (): void => {
       animation.reset();
       animate.reset();
     };

@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {BaseQueryResult} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import {ImageObject} from '../Models/ImageModel';
 
 export const imagesApi = createApi({
   reducerPath: 'imagesApi',
@@ -13,9 +14,9 @@ export const imagesApi = createApi({
     getImages: builder.query({
       transformResponse(
         baseQueryReturnValue: BaseQueryResult<any>,
-      ): Promise<any> | any {
-        let data: any = [];
-        const photos = baseQueryReturnValue.photos;
+      ): Array<Array<ImageObject>> {
+        let data: Array<Array<ImageObject>> = [];
+        const photos = baseQueryReturnValue.photos as Array<ImageObject>;
         for (let i = 0; i < photos.length - 20; i += 3) {
           data.push(photos.slice(i, i + 3));
         }

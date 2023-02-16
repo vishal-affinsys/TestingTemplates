@@ -10,7 +10,8 @@ const ImageCard = (props: {item: any}): JSX.Element => {
         source={{
           uri: item.src.large2x,
         }}
-        style={imageCard.imageStyle}
+        style={[imageCard.imageStyle, {aspectRatio: item.height / item.width}]}
+        resizeMode={'cover'}
       />
       <View style={imageCard.footerSection}>
         <Text variant={'labelLarge'} style={imageCard.alt}>
@@ -30,6 +31,7 @@ const imageCard = StyleSheet.create({
     elevation: 4,
     shadowOffset: {height: 0, width: 0},
     shadowColor: 'black',
+    alignSelf: 'center',
     shadowOpacity: 0.23,
     shadowRadius: 20,
     marginBottom: 20,
@@ -39,7 +41,6 @@ const imageCard = StyleSheet.create({
   },
   imageStyle: {
     width: '100%',
-    aspectRatio: 1.5,
     borderRadius: 12,
   },
   alt: {

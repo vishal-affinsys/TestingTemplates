@@ -97,7 +97,6 @@ const HomeScreen = () => {
       />
       <Animated.View
         onLayout={event => {
-          console.log(event.nativeEvent.layout.height);
           setChipsHeight(event.nativeEvent.layout.height);
         }}
         style={[style.chipAnimation, {transform: [{scale: opacity}]}]}>

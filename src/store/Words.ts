@@ -23,7 +23,6 @@ export const words = createApi({
         return [{word: 'Error'}];
       },
       query: name => {
-        console.log({name});
         return `?ml=${name}`;
       },
     }),

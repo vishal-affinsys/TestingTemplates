@@ -53,7 +53,6 @@ export const images = createApi({
   endpoints: builder => ({
     searchedImages: builder.query({
       query: ({name, count = 20}) => {
-        console.log({name, count});
         return `?query=${name}&per_page=${count}`;
       },
     }),

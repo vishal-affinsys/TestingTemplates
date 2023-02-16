@@ -1,10 +1,15 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {ImageObject} from '../Models/ImageModel';
 
+export interface Initial {
+  imageData: ImageObject | null;
+  isVisible: boolean;
+}
+
 const initialData = {
   imageData: {},
   isVisible: false,
-};
+} as Initial;
 
 export const imageSlice = createSlice({
   name: 'imageSlice',
@@ -18,7 +23,7 @@ export const imageSlice = createSlice({
       state.isVisible = true;
     },
     resetImageData: state => {
-      state.imageData = {};
+      state.imageData = null;
       state.isVisible = false;
     },
   },

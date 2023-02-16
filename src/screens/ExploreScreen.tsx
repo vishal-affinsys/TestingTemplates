@@ -4,18 +4,16 @@ import {FlatList, Pressable, StatusBar, StyleSheet, View} from 'react-native';
 import {useGetImagesQuery} from '../store/ImageReducer';
 import {TypeOne, TypeThree, TypeTwo} from '../components/StaggeredView';
 import {ScreenLayout} from '../constants/styles';
-import {useDispatch, useSelector} from 'react-redux';
 import {resetImage} from '../store/ImageData';
 import Visibility from '../components/Visibility';
 import {ImageObject} from '../Models/ImageModel';
+import {useAppSelector, useAppDispatch} from '../store/store';
 
 const ExploreScreen = (): JSX.Element => {
   const [params, setParams] = React.useState({perPage: 53, page: 1});
   const data = useGetImagesQuery(params);
-  const imageData = useSelector<unknown, any>(
-    (state: unknown): any => state.image,
-  );
-  const dispatch = useDispatch();
+  const imageData = useAppSelector(state => state.image);
+  const dispatch = useAppDispatch();
   const renderItem = React.useCallback(
     (props: {item: ImageObject[]; index: number}): JSX.Element => {
       if (props.item.length === 5) {

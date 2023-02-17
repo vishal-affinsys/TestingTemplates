@@ -11,7 +11,7 @@ import {useGetWordsQuery} from '../store/Words';
 
 const CHIPS_HEIGHT = 150;
 
-const HomeScreen = () => {
+const HomeScreen = (): JSX.Element => {
   const scaling = React.useRef(new Animated.Value(0)).current;
   const [query, setState] = React.useState({name: 'Sunset'});
   const {currentData, isLoading} = useSearchedImagesQuery(query);

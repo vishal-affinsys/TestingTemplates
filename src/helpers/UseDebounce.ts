@@ -4,14 +4,14 @@ export default function useDebounce(
   effect: () => void,
   dependencies: any,
   delay: number,
-) {
+): void {
   const callback: () => void = useCallback<() => void>(effect, [
     ...dependencies,
     effect,
   ]);
 
-  useEffect(() => {
+  useEffect((): void => {
     const timeout = setTimeout(callback, delay);
-    return () => clearTimeout(timeout);
+    return clearTimeout(timeout);
   }, [callback, delay]);
 }

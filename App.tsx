@@ -48,6 +48,9 @@ const App = (): JSX.Element => {
               options={{
                 tabBarIcon: props => TabIcons({...props}, 'smileo'),
                 tabBarActiveTintColor: '#294782',
+                headerStyle: {
+                  elevation: 0,
+                },
               }}
             />
           </Tab.Navigator>

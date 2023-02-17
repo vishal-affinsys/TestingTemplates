@@ -14,6 +14,30 @@ export const Colors = {
   textColor: 'rgba(40,40,40,1)',
 };
 
+export const LightTheme = {
+  dark: false,
+  colors: {
+    primary: Colors.primary,
+    background: 'rgb(242, 242, 242)',
+    card: 'rgb(255, 255, 255)',
+    text: 'rgb(28, 28, 30)',
+    border: 'rgb(199, 199, 204)',
+    notification: 'rgb(255, 69, 58)',
+  },
+};
+
+export const DarkTheme = {
+  dark: true,
+  colors: {
+    primary: Colors.primary,
+    background: 'rgb(40, 40, 40)',
+    card: 'rgb(0, 0, 0)',
+    text: 'rgb(240, 240, 240)',
+    border: 'rgb(199, 199, 204)',
+    notification: 'rgb(255, 69, 58)',
+  },
+};
+
 export const ScreenLayout = {
   height: height,
   width: width,

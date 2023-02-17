@@ -1,4 +1,5 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import {useTheme} from '@react-navigation/native';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,6 +10,10 @@ import {
 } from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {KEYS, storeData} from '../helpers/CacheManager';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {setTheme} from '../store/ThemeReducer';
+
 import Row from './Row';
 
 interface ISettingTile {
@@ -18,18 +23,20 @@ interface ISettingTile {
   children?: JSX.Element | undefined;
 }
 
-const Options = (props: {
-  value: string;
-  selected: string;
-  onPress: Dispatch<SetStateAction<string>>;
-}): JSX.Element => {
+const Options = (props: {value: string; selected: string}): JSX.Element => {
+  const Theme = useTheme();
+
+  const dispatch = useAppDispatch();
   return (
     <Row style={style.rowStyle}>
-      <Text style={style.optionsTile}>{props.value}</Text>
+      <Text style={[style.optionsTile, {color: Theme.colors.text}]}>
+        {props.value}
+      </Text>
       <RadioButton
         value={props.value}
-        onPress={(): void => {
-          props.onPress(props.value);
+        onPress={async (): Promise<void> => {
+          dispatch(setTheme(props.value));
+          await storeData(KEYS.Theme, props.value);
         }}
         color="grey"
         uncheckedColor="grey"
@@ -46,7 +53,7 @@ const SettingTile = (props: ISettingTile): JSX.Element => {
   const opacity = React.useRef(new Animated.Value(0)).current;
   const [visible, setVisibility] = React.useState(true);
 
-  const [value, setValue] = React.useState('Light');
+  const value = useAppSelector(state => state.theme).status;
 
   const rotate = height.interpolate({
     inputRange: [INITIAL_HEIGHT, 200],
@@ -84,18 +91,28 @@ const SettingTile = (props: ISettingTile): JSX.Element => {
     }
   };
 
+  const Theme = useTheme();
+
   return (
-    <Animated.View style={[style.bodyTile, {height: height}]}>
+    <Animated.View
+      style={[
+        style.bodyTile,
+        {height: height, backgroundColor: Theme.colors.card},
+      ]}>
       <Pressable onPress={animate}>
         <View style={style.innerContainer}>
           <View style={style.bodyTileLeft}>
             {props.leadingIcon === undefined ? null : (
               <Icon name={props.leadingIcon} size={30} color={'grey'} />
             )}
-            <Text style={style.bodyTileTitle}>{props.title}</Text>
+            <Text style={[style.bodyTileTitle, {color: Theme.colors.text}]}>
+              {props.title}
+            </Text>
           </View>
           <View style={style.bodyTileLeft}>
-            <Text style={style.bodyTileConfig}>{value}</Text>
+            <Text style={[style.bodyTileConfig, {color: Theme.colors.text}]}>
+              {value}
+            </Text>
             <Animated.View style={[{transform: [{rotateZ: rotate}]}]}>
               <Icon
                 name={'caret-down-circle-outline'}
@@ -108,9 +125,9 @@ const SettingTile = (props: ISettingTile): JSX.Element => {
       </Pressable>
       {visible ? (
         <Animated.View style={[style.footerSection, {opacity: opacity}]}>
-          <Options value="Light" selected={value} onPress={setValue} />
-          <Options value="Dark" selected={value} onPress={setValue} />
-          <Options value="System default" selected={value} onPress={setValue} />
+          <Options value="Light" selected={value} />
+          <Options value="Dark" selected={value} />
+          <Options value="System default" selected={value} />
         </Animated.View>
       ) : null}
     </Animated.View>
@@ -119,7 +136,6 @@ const SettingTile = (props: ISettingTile): JSX.Element => {
 
 const style = StyleSheet.create({
   bodyTile: {
-    backgroundColor: 'white',
     paddingHorizontal: 12,
     alignItems: 'flex-start',
     paddingVertical: 24,
@@ -138,7 +154,6 @@ const style = StyleSheet.create({
     width: '100%',
   },
   bodyTileTitle: {
-    color: 'black',
     marginHorizontal: 12,
     fontSize: 16,
     fontWeight: '300',
@@ -160,7 +175,6 @@ const style = StyleSheet.create({
     marginVertical: 10,
   },
   optionsTile: {
-    color: 'black',
     fontWeight: '300',
     letterSpacing: 0.1,
     fontSize: 16,

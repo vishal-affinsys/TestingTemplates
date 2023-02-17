@@ -8,6 +8,7 @@ import {resetImage} from '../store/ImageData';
 import Visibility from '../components/Visibility';
 import {ImageObject} from '../Models/ImageModel';
 import {useAppSelector, useAppDispatch} from '../store/store';
+import {useTheme} from '@react-navigation/native';
 
 const ExploreScreen = (): JSX.Element => {
   const [params, setParams] = React.useState({perPage: 53, page: 1});
@@ -31,12 +32,14 @@ const ExploreScreen = (): JSX.Element => {
     [],
   );
 
+  const Theme = useTheme();
+
   return (
     <View style={[style.container]}>
       <StatusBar
         translucent={true}
         backgroundColor={'transparent'}
-        barStyle={'dark-content'}
+        barStyle={Theme.dark ? 'light-content' : 'dark-content'}
       />
       <Pressable
         style={[

@@ -4,6 +4,7 @@ import {imageSlice} from './ImageData';
 import {images, imagesApi} from './ImageReducer';
 import {words} from './Words';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import {ThemeSlice} from './ThemeReducer';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     [images.reducerPath]: images.reducer,
     [words.reducerPath]: words.reducer,
     image: imageSlice.reducer,
+    theme: ThemeSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat([

@@ -1,17 +1,29 @@
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SettingTile from '../components/SettingTile';
 
 const AccountScreen = (): JSX.Element => {
+  const Theme = useTheme();
+
   return (
     <View>
-      <View style={style.tileContainer}>
+      <View
+        style={[
+          style.tileContainer,
+          {
+            shadowColor: Theme.colors.text,
+            backgroundColor: Theme.colors.card,
+          },
+        ]}>
         <View style={style.iconContainer}>
           <Icon name="person" size={40} color={'grey'} />
         </View>
         <View style={style.tileContent}>
-          <Text style={style.titleStyle}>Vishal Singh</Text>
+          <Text style={[style.titleStyle, {color: Theme.colors.text}]}>
+            Vishal Singh
+          </Text>
           <Text style={style.phoneStyle}>7084324572</Text>
         </View>
       </View>
@@ -24,12 +36,10 @@ export default AccountScreen;
 
 const style = StyleSheet.create({
   tileContainer: {
-    backgroundColor: 'white',
     paddingHorizontal: 12,
     paddingVertical: 24,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: 'black',
     shadowOffset: {height: 12, width: 0},
     elevation: 3,
     borderBottomLeftRadius: 24,
@@ -46,7 +56,6 @@ const style = StyleSheet.create({
     margin: 4,
   },
   titleStyle: {
-    color: 'black',
     fontWeight: '800',
     letterSpacing: 2,
     fontSize: 18,
